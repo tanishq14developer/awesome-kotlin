@@ -16,6 +16,8 @@ repositories {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
         jvmTarget = "11"
+        languageVersion = "1.6"
+        freeCompilerArgs = freeCompilerArgs + "-Xcontext-receivers"
         freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.time.ExperimentalTime"
         freeCompilerArgs = freeCompilerArgs + "-Xopt-in=io.ktor.locations.KtorExperimentalLocationsAPI"
     }

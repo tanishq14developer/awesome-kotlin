@@ -1,6 +1,5 @@
 package link.kotlin.server.routes
 
-import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
@@ -10,12 +9,11 @@ import io.ktor.routing.post
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
+import link.kotlin.server.ApplicationFactory
 import link.kotlin.server.routes.KotlinerDao.*
 
-fun Routing.register(
-    bcryptHasher: BCrypt.Hasher,
-    kotlinerDao: KotlinerDao,
-) {
+context(ApplicationFactory)
+fun Routing.register() {
     post("/register") {
         val request = call.receive<RegisterBody>()
 

@@ -21,6 +21,9 @@ tasks.withType<Test>().configureEach {
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
         jvmTarget = "11"
+        freeCompilerArgs = freeCompilerArgs + listOf(
+            "-Xcontext-receivers"
+        )
     }
 }
 

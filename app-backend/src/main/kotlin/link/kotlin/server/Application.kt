@@ -63,8 +63,8 @@ open class ApplicationFactory {
 
             routing {
                 ping()
-                login(jwtConfig, bcryptVerifier, kotlinerDao)
-                register(bcryptHasher, kotlinerDao)
+                login()
+                register()
 
                 authenticate("jwt") {
 

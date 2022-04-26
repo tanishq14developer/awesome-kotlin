@@ -1,6 +1,5 @@
 package link.kotlin.server.routes
 
-import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.application.call
@@ -9,16 +8,13 @@ import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.post
 import kotlinx.serialization.Serializable
+import link.kotlin.server.ApplicationFactory
 import link.kotlin.server.plugins.AuthenticationException
-import link.kotlin.server.plugins.JwtConfiguration
 import java.util.Date
 
 
-fun Routing.login(
-    jwtConfiguration: JwtConfiguration,
-    bcryptVerifier: BCrypt.Verifyer,
-    kotlinerDao: KotlinerDao,
-) {
+context(ApplicationFactory)
+fun Routing.login() {
     post("/login") {
         val request = call.receive<LoginBody>()
         val db = kotlinerDao.get(request.email)
@@ -32,11 +28,11 @@ fun Routing.login(
 
         if (result.verified) {
             val token = JWT.create()
-                .withAudience(jwtConfiguration.audience)
-                .withIssuer(jwtConfiguration.issuer)
+                .withAudience(jwtConfig.audience)
+                .withIssuer(jwtConfig.issuer)
                 .withClaim("id", db.id)
                 .withIssuedAt(Date(System.currentTimeMillis()))
-                .sign(Algorithm.HMAC512(jwtConfiguration.secret))
+                .sign(Algorithm.HMAC512(jwtConfig.secret))
 
             call.respond(hashMapOf("token" to token))
         } else {
